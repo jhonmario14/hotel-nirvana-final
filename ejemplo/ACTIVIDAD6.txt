@@ -1,0 +1,35 @@
+Con base a las tablas anteriores realizar las siguientes consultas:
+
+*Realizar el producto cruzado entre las tablas cliente y orden.
+SELECT nom_cliente,estado,id_orden,fecha from C##JUANCONTRERAS.CLIENTE,C##JUANCONTRERAS.ORDEN ORDER BY nom_cliente,estado,id_orden,fecha;
+
+*Obtener el listado de articulos (nombre articulo, precio unitario, cantidad, precio total) que compro Martin (realizar con sintaxis 92 y 99).
+sintaxis 92
+SELECT ao.id_orden,nom_art, precio, cant, (cant*precio) FROM C##JUANCONTRERAS.cliente c,
+C##JUANCONTRERAS.articulo a,C##JUANCONTRERAS.orden o, C##JUANCONTRERAS.articulo_orden ao
+WHERE c.id_cliente=o.id_cliente 
+and a.num_art=ao.num_art 
+and o.id_orden=ao.id_orden
+and c.nom_cliente='Martin';
+
+sintaxis 99
+SELECT ao.id_orden,a.nom_art, a.precio, ao.cant, (ao.cant*a.precio) FROM C##JUANCONTRERAS.cliente c
+JOIN C##JUANCONTRERAS.orden o on  (c.id_cliente=o.id_cliente )
+JOIN C##JUANCONTRERAS.articulo_orden ao on (o.id_orden=ao.id_orden)
+JOIN C##JUANCONTRERAS.articulo a on (a.num_art=ao.num_art)
+WHERE c.nom_cliente='Martin';
+
+*Obtener el listado de ordenes, con el nombre del cliente y el total a pagar.
+SELECT ao.id_orden,c.nom_cliente,sum(ao.cant*a.precio) FROM C##JUANCONTRERAS.cliente c
+JOIN C##JUANCONTRERAS.orden o on  (c.id_cliente=o.id_cliente )
+JOIN C##JUANCONTRERAS.articulo_orden ao on (o.id_orden=ao.id_orden)
+JOIN C##JUANCONTRERAS.articulo a on (a.num_art=ao.num_art)
+GROUP by ao.id_orden,c.nom_cliente;
+
+*Obtener el nombre de articulos y del cliente que compraron productos con un precio mayor o igual a 35.
+SELECT nom_art,c.nom_cliente  FROM C##JUANCONTRERAS.cliente c
+JOIN C##JUANCONTRERAS.orden o on  (c.id_cliente=o.id_cliente )
+JOIN C##JUANCONTRERAS.articulo_orden ao on (o.id_orden=ao.id_orden)
+JOIN C##JUANCONTRERAS.articulo a on (a.num_art=ao.num_art)
+WHERE a.precio >= 35;
+
